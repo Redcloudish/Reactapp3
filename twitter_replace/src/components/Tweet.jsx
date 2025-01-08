@@ -3,35 +3,45 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const Post = () => {
-    const { id } = useParams();  // Get tweet ID from the URL
-    const [tweet, setTweet] = useState(null);
+    const { id } = useParams(); // Get post ID from the URL
+    const [post, setPost] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        const fetchTweet = async () => {
+        const fetchPost = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/get-tweet.php?id=${id}`);
-                setTweet(response.data);
-            } catch (error) {
-                setError("Error fetching tweet. Please try again later.");
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/post.php?id=${id}`);
+                const post = response.data.data; // Assuming the API returns a `data` object with post details
+                setPost(post);
+            } catch (err) {
+                console.error(err);
+                setError("Error fetching the post. Please try again later.");
             }
         };
 
-        fetchTweet();
+        fetchPost();
     }, [id]);
+
+    if (error) {
+        return <div className="container my-4 alert alert-danger">{error}</div>;
+    }
+
+    if (!post) {
+        return <div className="container my-4">Loading...</div>;
+    }
 
     return (
         <div className="container my-4">
-            {error && <div className="alert alert-danger">{error}</div>}
-            {tweet ? (
-                <>
-                    <h1 className="mb-4">{tweet.content}</h1>
-                    <p><strong>Author ID:</strong> {tweet.author_id}</p>
-                    {/* Add any additional tweet information here */}
-                </>
-            ) : (
-                <p>Loading tweet...</p>
-            )}
+            <h1 className="mb-4">{post.title}</h1>
+            <p>{post.content}</p>
+            <hr />
+            <div className="d-flex justify-content-between">
+                <div>
+                    <small className="text-muted">
+                        Posted by {post.author} on {post.date}
+                    </small>
+                </div>
+            </div>
         </div>
     );
 };
