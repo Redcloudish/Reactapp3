@@ -1,24 +1,24 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // npm install react-router-dom
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-import CreateTweet from './components/CreateTweet'; // Renamed from CreatePost
-import Tweet from './components/Tweet'; // Renamed from Post
-import TweetList from './components/TweetList'; // Renamed from PostList
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import CreateTweet from './components/CreateTweet';
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path={"/"} element={<TweetList />} /> {/* Renamed from PostList */}
-          <Route path={"/create-tweet"} element={<CreateTweet />} /> {/* Renamed from CreatePost */}
-          <Route path={"/tweet/:id"} element={<Tweet />} /> {/* Renamed from Post */}
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/create-tweet" element={<CreateTweet />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
